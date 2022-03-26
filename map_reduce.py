@@ -41,7 +41,7 @@ init = lambda l: [] if len(sys.argv) != l + 1 else sys.argv[1:]
 if __name__ == '__main__':
     io = init(2) # accept 2 args, excluding src.py
     if not io:
-        print
+        sys.stderr.write('num of args err')
 
     if io:
         (i, o) = io
@@ -60,7 +60,7 @@ if __name__ == '__main__':
                 lambda a, b: ','.join(str(i) for i in map(add, eval(a), eval(b)))
                 # overspeedCount, overspeedTime element-wise addition
             )
-        overspeedStat.collect().saveAsTextFile('StatOS' + o)
+        overspeedStat.collect().saveAsTextFile('overspeed' + o)
         
         fatigueCount = \
             line.map(
@@ -71,7 +71,7 @@ if __name__ == '__main__':
             ).reduceByKey(
                 add
             )
-        fatigueCount.collect().saveAsTextFile('StatFC' + o)
+        fatigueCount.collect().saveAsTextFile('fatigue' + o)
         
         neutralSlideTime = \
             line.map(
@@ -82,6 +82,6 @@ if __name__ == '__main__':
             ).reduceByKey(
                 add
             )
-        neutralSlideTime.collect().saveAsTextFile('StatNT' + o)
+        neutralSlideTime.collect().saveAsTextFile('neutralslide' + o)
 
         sc.stop()
