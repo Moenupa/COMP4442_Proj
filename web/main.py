@@ -10,7 +10,7 @@ def db_connection():
         host='database-1.ca3min6kadhv.us-east-1.rds.amazonaws.com', 
         user='admin', 
         port='3306', 
-        passwd='12345678',
+        passwd='',
         database='Summary',
         autocommit=True
     )
@@ -19,6 +19,20 @@ def db_connection():
 connection = db_connection()
 cursor = connection.cursor()
 latest = -1
+routes = {
+    '/': {
+        'title': 'Welcome',
+        'icon': 'mdi-home'
+    },
+    '/stat': {
+        'title': 'Statistics',
+        'icon': 'mdi-table'
+    },
+    '/monitor': {
+        'title': 'Monitor',
+        'icon': 'mdi-chart-areaspline'
+    }
+}
 
 @app.route('/about')
 def hello_world():
@@ -26,7 +40,11 @@ def hello_world():
 
 @app.route('/')
 def speedmonitor():
-    return render_template("index.html")
+    return render_template(
+        "index.html",
+        routes = routes,
+        cur = "/"
+    )
 
 @app.route('/monitor')
 def monitor():
@@ -52,20 +70,50 @@ def stat():
     cursor.execute("use Summary;")
     cursor.execute("select * from SummaryTable;")
     data = cursor.fetchall()
-    d = {
-        # "driver": len(set(eval(i[0]) for i in data)),
-        # "cars": len(set(eval(i[1]) for i in data)),
-        # "overspeed-count": sum(eval(i[6]) for i in data),
-        # "overspeed-time": sum(eval(i[7]) for i in data),
-        # "fatigue-count": sum(eval(i[8]) for i in data),
-        # "neutralslide-time": sum(eval(i[5]) for i in data),
-        "driver": 0,
-        "cars": 0,
-        "overspeed-count": 0,
-        "overspeed-time": 0,
-        "fatigue-count": 0,
-        "neutralslide-time": 0,
-    }
+    stats = [
+        {
+            'title': 'total drivers',
+            'color': 'green',
+            'num': len(set(i[0] for i in data)),
+            'append': '',
+            'icon': 'mdi-account'
+        },
+        {
+            'title': 'total vehicles',
+            'color': 'blue',
+            'num': len(set(i[1] for i in data)),
+            'append': '',
+            'icon': 'mdi-car'
+        },
+        {
+            'title': 'total neutralslide time',
+            'color': 'indigo',
+            'num': sum(eval(i[5]) for i in data),
+            'append': 'seconds',
+            'icon': 'mdi-car-side'
+        },
+        {
+            'title': 'overspeed count',
+            'color': 'pink',
+            'num': sum(eval(i[6]) for i in data),
+            'append': 'times',
+            'icon': 'mdi-speedometer'
+        },
+        {
+            'title': 'total overspeed time',
+            'color': 'red',
+            'num': sum(eval(i[7]) for i in data),
+            'append': 'seconds',
+            'icon': 'mdi-timelapse'
+        },
+        {
+            'title': 'fatigue count',
+            'color': 'orange',
+            'num': sum(eval(i[8]) for i in data),
+            'append': 'times',
+            'icon': 'mdi-sleep'
+        },
+    ]
     table_headers = [
         "DriverID",
         "Car Plate",
@@ -80,7 +128,14 @@ def stat():
         "Count of Oil Leak",
     ]
     print(data)
-    return render_template("stat.html", data = data, stats = d, headers = table_headers)
+    return render_template(
+        "index.html", 
+        data = data, 
+        stats = stats, 
+        headers = table_headers, 
+        routes = routes,
+        cur = "/stat"
+    )
 
 if __name__ == "__main__":
     app.run(debug=True, port=8888)

@@ -8,8 +8,8 @@ def db_connection():
         host='',
         user='admin',
         port='',
-        database = ''
-        passwd = '12345678',
+        database = '',
+        passwd = '',
         autocommit = True
     )
     return connection

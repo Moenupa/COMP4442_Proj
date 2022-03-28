@@ -2,10 +2,10 @@ from ast import literal_eval
 import mysql.connector, os
 
 driverdb = mysql.connector.connect(
-    host='database-1.ca3min6kadhv.us-east-1.rds.amazonaws.com', 
+    host='database-1.ca3min6kadhv.us-east-1.rds.amazonaws.com',
     user='admin', 
     port='3306', 
-    passwd='12345678', 
+    passwd='',
     autocommit=True
 )
 print("Successfully connect to DB")
