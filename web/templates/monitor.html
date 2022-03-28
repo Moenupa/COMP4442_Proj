@@ -7,7 +7,7 @@
   </head>
   <body>
     <div id="app">
-      
+      <div id="monitor"></div>
     </div>
   </body>
 
@@ -16,15 +16,15 @@
     $(() => {
       // rendering page for the first time
       $.getJSON('/api', (data) => {
-        // call highcharts to eject into #app
-        $('#app').highcharts(
+        // call highcharts to eject into #monitor
+        $('#monitor').highcharts(
           'StockChart',
           {
             chart: {
               events: {
                 // load as chart
                 load: () => {
-                  var chart = $('#app').highcharts();
+                  var chart = $('#monitor').highcharts();
                   var series = chart.series[0];
                   // refreshing data by interval
                   // reload every 2s

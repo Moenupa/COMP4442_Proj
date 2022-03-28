@@ -18,6 +18,8 @@ db = db_connection()
 cursor = db.cursor()
 
 def getData():
+    global lastest
+    query = "select id, time, driver, speed from SpeedRecords where time > lastest"
     speed = random.randint(1,10)
     t = int(time.time())
     driver = 'driver'
