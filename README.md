@@ -1,5 +1,20 @@
 # comp4442
 
+## Project Structure
+
+```sh
+.
+├── detail-records/         # records of driving data
+├── drive_stat_in/          # source code for processing driving data
+├── drive_stat_out/         # output of driving statistics
+├── env/                    # local virtualenv, need to set up locally
+├── web/                    # Web Flask application
+│   ├── template/           # html templates
+│   ├── main.py             # End-to-end, integration tests (alternatively `e2e`)
+│   └── write.py            # Write to the database with real-time data
+└── table.sql               # sql to set up the table
+```
+
 ## Dataset representation
 
 ```py
