@@ -1,0 +1,59 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Real-time Monitoring</title>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      
+    </div>
+  </body>
+
+  <script type="text/javascript">
+    // jquery call
+    $(() => {
+      // rendering page for the first time
+      $.getJSON('/api', (data) => {
+        // call highcharts to eject into #app
+        $('#app').highcharts(
+          'StockChart',
+          {
+            chart: {
+              events: {
+                // load as chart
+                load: () => {
+                  var chart = $('#app').highcharts();
+                  var series = chart.series[0];
+                  // refreshing data by interval
+                  // reload every 2s
+                  setInterval(() => {
+                    $.getJSON('/api', (e) => {
+                      $.each(e, (i, v) =>{
+                        series.addPoint(v);
+                      })
+                    })
+                  }, 2000);
+                }
+              }
+            },
+            rangeSelector: {
+              selected: 1
+            },
+            title: {
+              text: 'Real-Time Driving Monitor'
+            },
+            series: [{
+              name: 'Real-Time Speed',
+              data: data,
+              tooltip: {
+                valueDecimals: 2
+              }
+            }]
+          }
+        );
+      })
+    })(jQuery);
+  </script>
+</html>
