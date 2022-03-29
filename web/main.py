@@ -10,7 +10,7 @@ def db_connection():
         host='database-1.ca3min6kadhv.us-east-1.rds.amazonaws.com', 
         user='admin', 
         port='3306', 
-        passwd='12345678',
+        passwd='',
         database='Summary',
         autocommit=True
     )
