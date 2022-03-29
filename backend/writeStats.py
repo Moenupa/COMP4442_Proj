@@ -1,10 +1,10 @@
 from ast import literal_eval
 import os
 
-from db_connection import DBConnecter
+from db_connector import DBConnector
 
-connecter = DBConnecter()
-cursor = connecter.db_cursor()
+connector = DBConnector()
+cursor = connector.get_db_cursor()
 print("Successfully connect to DB")
 
 path = "./drive_stat_out/"
@@ -18,7 +18,7 @@ for item in items:
                 (k, v) = literal_eval(record)
                 if len(k) == 0:
                     continue
-                query = "insert into Summary (DriverID, {}) values (\"{}\", \"{}\") on DUPLICATE KEY update {} = VALUES({});".format(item, k, str(v), item, item)
+                query = f"INSERT INTO {connector.summary_table_name} (DriverID, {item}) VALUES (\"{k}\", \"{v}\") on DUPLICATE KEY UPDATE {item} = VALUES ({v});"
                 cursor.execute(query)
                 print("insert success:", k, v, "\r", end="")
                 

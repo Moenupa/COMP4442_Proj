@@ -1,23 +1,13 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template
 import json
-import mysql.connector
 import random
 import time
+import os
+from db_connector import DBConnector
 
 app = Flask(__name__, static_url_path='/static')
 
-def db_connection():
-    # establish db connection
-    connection = mysql.connector.connect(
-        host='database-1.ca3min6kadhv.us-east-1.rds.amazonaws.com', 
-        user='admin', 
-        port='3306', 
-        passwd='12345678',
-        database='DriveStats',
-        autocommit=True
-    )
-    return connection
-
+connector = DBConnector()
 latest = 0
 cur_driver = ''
 routes = {
@@ -66,14 +56,13 @@ def monitor():
 @app.route('/api/speed/<driverID>')
 def API_speed(driverID):
     global latest, cur_driver
-    connection = db_connection()
-    cursor = connection.cursor()
+    cursor = connector.get_db_cursor()
 
     if cur_driver != driverID:
         latest = 0
         cur_driver = driverID
     
-    query = f"select ID, DriverID, Time, Speed from Records where DriverID = \"{driverID}\" and ID > {latest};"
+    query = f"select ID, DriverID, Time, Speed from {os.getenv('SPEED_TABLE')} where DriverID = \"{driverID}\" and ID > {latest};"
     cursor.execute(query)
     data = cursor.fetchall()
     
@@ -88,10 +77,9 @@ def API_speed(driverID):
 @app.route('/api/drivers')
 def API_drivers():
     # return json.dumps(['driver%02d' % (i) for i in range(1,11)])
-    connection = db_connection()
-    cursor = connection.cursor()
+    cursor = connector.get_db_cursor()
     
-    query = "select DriverID from Summary;"
+    query = f"select DriverID from {os.getenv('SUMMARY_TABLE')};"
     cursor.execute(query)
     data = cursor.fetchall()
     return json.dumps([id for row in data for id in row])
@@ -103,9 +91,8 @@ def test():
 
 @app.route('/stat')
 def stat():
-    connection = db_connection()
-    cursor = connection.cursor()
-    cursor.execute("select * from Summary;")
+    cursor = connector.get_db_cursor()
+    cursor.execute(f"select * from {os.getenv('SUMMARY_TABLE')};")
     data = cursor.fetchall()
     stats = [
         {
