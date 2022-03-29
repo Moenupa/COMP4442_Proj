@@ -10,14 +10,12 @@ def db_connection():
         host='database-1.ca3min6kadhv.us-east-1.rds.amazonaws.com', 
         user='admin', 
         port='3306', 
-        passwd='',
+        passwd='12345678',
         database='Summary',
         autocommit=True
     )
     return connection
 
-connection = db_connection()
-cursor = connection.cursor()
 latest = -1
 routes = {
     '/': {
@@ -43,15 +41,26 @@ def speedmonitor():
     return render_template(
         "index.html",
         routes = routes,
-        cur = "/"
+        cur = "/",
+        msg = [
+            'Welcome to driving Statistics',
+            'This platform displays data processed by '
+        ]
     )
 
 @app.route('/monitor')
 def monitor():
-    return render_template("monitor.html")
+    return render_template(
+        "index.html",
+        routes = routes,
+        cur = "/monitor",
+        monitor = True
+    )
 
 @app.route('/api')
 def api():
+    connection = db_connection()
+    cursor = connection.cursor()
     query = "select id, time, driver, speed from SpeedRecords"
     global latest
     if latest > 0:
@@ -67,6 +76,8 @@ def api():
 
 @app.route('/stat')
 def stat():
+    connection = db_connection()
+    cursor = connection.cursor()
     cursor.execute("use Summary;")
     cursor.execute("select * from SummaryTable;")
     data = cursor.fetchall()
@@ -127,12 +138,11 @@ def stat():
         "Count of Hthrottle Stop",
         "Count of Oil Leak",
     ]
-    print(data)
     return render_template(
         "index.html", 
-        data = data, 
+        table_data = data, 
         stats = stats, 
-        headers = table_headers, 
+        table_headers = table_headers, 
         routes = routes,
         cur = "/stat"
     )

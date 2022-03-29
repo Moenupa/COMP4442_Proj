@@ -11,7 +11,7 @@ sc = SparkContext()
 files = sc.wholeTextFiles(i)
 records = files.flatMap(lambda file: file[1].split("\n")).map(lambda line: line.split(","))
 
-speed = records.map(lambda record: (record[0], 0 if (len(record) < 4 or record[3] == "") else eval(record[3])))
+speed = records.map(lambda record: (record[0], record[7] + "," + record[4] if len(record) >= 8 else "") )
 speed.collectAsMap().saveAsTextFile(o + "speed")
 
 sc.stop()
