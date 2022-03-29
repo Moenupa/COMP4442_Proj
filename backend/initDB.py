@@ -1,18 +1,13 @@
-import mysql.connector, os
+from db_connection import DBConnecter
 
-driverdb = mysql.connector.connect(
-    host='database-1.ca3min6kadhv.us-east-1.rds.amazonaws.com', 
-    user='admin', 
-    port='3306', 
-    passwd='', 
-    autocommit=True
-)
-print("Successfully connect to DB")
+connecter = DBConnecter()
+cursor = connecter.create_db_and_get_cursor()
+print("Successfully connect to database")
 
-cursor = driverdb.cursor()
-cursor.execute("drop database if exists Summary;")
-cursor.execute("create database `Summary` CHARACTER SET utf8 COLLATE utf8_general_ci;")
-cursor.execute("use Summary;")
-cursor.execute("drop table if exists SummaryTable;")
-cursor.execute("CREATE TABLE IF NOT EXISTS SummaryTable (DriverID varchar(40) NOT NULL, carPlate varchar(40) NOT NULL, speedUp varchar(40) NOT NULL, slowDown varchar(40) NOT NULL, neutralSlide varchar(40) NOT NULL, neutralSlideTime varchar(40) NOT NULL, overspeed varchar(40) NOT NULL, overspeedTime varchar(40) NOT NULL, fatigue varchar(40) NOT NULL, hthrottleStop varchar(40) NOT NULL, oilLeak varchar(40) NOT NULL, PRIMARY KEY (DriverID)) ENGINE=InnoDB DEFAULT CHARSET=utf8;")
-cursor.execute("describe SummaryTable;")
+cursor.execute("drop table if exists Summary;")
+cursor.execute("CREATE TABLE Summary (DriverID varchar(40) NOT NULL, carPlate varchar(40) NOT NULL, speedUp varchar(40) NOT NULL, slowDown varchar(40) NOT NULL, neutralSlide varchar(40) NOT NULL, neutralSlideTime varchar(40) NOT NULL, overspeed varchar(40) NOT NULL, overspeedTime varchar(40) NOT NULL, fatigue varchar(40) NOT NULL, hthrottleStop varchar(40) NOT NULL, oilLeak varchar(40) NOT NULL, PRIMARY KEY (DriverID)) ENGINE=InnoDB default charset=utf8;")
+print("`Summary` table created.")
+
+cursor.execute("drop table if exists Records;")
+cursor.execute("CREATE TABLE Records (ID int(11) unsigned not null auto_increment, DriverID varchar(40) not null, Time bigint(11) not null, Speed int(11) not null, PRIMARY KEY (ID)) ENGINE=InnoDB auto_increment=1 default charset=utf8;")
+print("`Records` table created.")

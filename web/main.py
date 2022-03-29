@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request
 import json
 import mysql.connector
+import random
+import time
 
 app = Flask(__name__, static_url_path='/static')
 
@@ -10,13 +12,14 @@ def db_connection():
         host='database-1.ca3min6kadhv.us-east-1.rds.amazonaws.com', 
         user='admin', 
         port='3306', 
-        passwd='',
-        database='Summary',
+        passwd='12345678',
+        database='DriveStats',
         autocommit=True
     )
     return connection
 
-latest = -1
+latest = 0
+cur_driver = ''
 routes = {
     '/': {
         'title': 'Welcome',
@@ -50,36 +53,59 @@ def speedmonitor():
 
 @app.route('/monitor')
 def monitor():
+    drivers = json.loads(API_drivers())
+
     return render_template(
         "index.html",
         routes = routes,
         cur = "/monitor",
+        drivers = drivers,
         monitor = True
     )
 
-@app.route('/api')
-def api():
+@app.route('/api/speed/<driverID>')
+def API_speed(driverID):
+    global latest, cur_driver
     connection = db_connection()
     cursor = connection.cursor()
-    query = "select id, time, driver, speed from SpeedRecords"
-    global latest
-    if latest > 0:
-        query += " where id > " % (latest)
 
+    if cur_driver != driverID:
+        latest = 0
+        cur_driver = driverID
+    
+    query = f"select ID, DriverID, Time, Speed from Records where DriverID = \"{driverID}\" and ID > {latest};"
     cursor.execute(query)
     data = cursor.fetchall()
     
-    # update latest data
-    latest = data[-1][0] if (len(data) > 0) else latest
+    if len(data) > 0:
+        latest = data[-1][0]
+    
+    reduced = [row[2:] for row in data]
+    print(query)
+    print('last record:', data[-1])
+    return json.dumps(reduced)
 
+@app.route('/api/drivers')
+def API_drivers():
+    # return json.dumps(['driver%02d' % (i) for i in range(1,11)])
+    connection = db_connection()
+    cursor = connection.cursor()
+    
+    query = "select DriverID from Summary;"
+    cursor.execute(query)
+    data = cursor.fetchall()
+    return json.dumps([id for row in data for id in row])
+
+@app.route('/test')
+def test():
+    data = [['driverID', time.time(), random.randint(10,60)] for i in range(random.randint(2,5))]
     return json.dumps(data)
 
 @app.route('/stat')
 def stat():
     connection = db_connection()
     cursor = connection.cursor()
-    cursor.execute("use Summary;")
-    cursor.execute("select * from SummaryTable;")
+    cursor.execute("select * from Summary;")
     data = cursor.fetchall()
     stats = [
         {
@@ -101,7 +127,7 @@ def stat():
             'color': 'indigo',
             'num': sum(eval(i[5]) for i in data),
             'append': 'seconds',
-            'icon': 'mdi-car-side'
+            'icon': 'mdi-road'
         },
         {
             'title': 'overspeed count',
@@ -128,15 +154,15 @@ def stat():
     table_headers = [
         "DriverID",
         "Car Plate",
-        "Count of Rapid Speeding Up",
-        "Count of Rapid Slow Down",
-        "Count of Neutral Slide",
-        "Total Time of Neutral Slide",
-        "Count of Overspeeding",
-        "Total Time of Overspeeding",
-        "Count of Fatigue Driving",
-        "Count of Hthrottle Stop",
-        "Count of Oil Leak",
+        "Rapid Speed-Ups",
+        "Rapid Slow-Downs",
+        "Neutral Slides",
+        "Neutral Slide Time",
+        "Over-speed Count",
+        "Over-speed Time",
+        "Fatigue-Drivings",
+        "Hthrottle Stops",
+        "Oil Leaks",
     ]
     return render_template(
         "index.html", 
