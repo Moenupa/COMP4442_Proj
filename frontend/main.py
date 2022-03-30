@@ -4,6 +4,7 @@ import random
 import time
 import os
 from db_connector import DBConnector
+from werkzeug.exceptions import HTTPException
 
 app = Flask(__name__, static_url_path='/static')
 
@@ -22,12 +23,23 @@ routes = {
     '/monitor': {
         'title': 'Monitor',
         'icon': 'mdi-chart-areaspline'
-    }
+    },
+    '/about': {
+        'title': 'About',
+        'icon': 'mdi-information'
+    },
 }
 
 @app.route('/about')
 def hello_world():
-    return 'Flask: Hello World'
+    return render_template(
+        "index.html",
+        routes = routes,
+        cur = "/about",
+        msg = [
+            'About page'
+        ]
+    )
 
 @app.route('/')
 def speedmonitor():
@@ -69,10 +81,9 @@ def API_speed(driverID):
     if len(data) > 0:
         latest = data[-1][0]
     
-    reduced = [row[2:] for row in data]
-    print(query)
-    print('last record:', data[-1])
-    return json.dumps(reduced)
+    # print(query)
+    # print('last record:', data[-1])
+    return json.dumps([row[2:] for row in data])
 
 @app.route('/api/drivers')
 def API_drivers():
@@ -159,6 +170,10 @@ def stat():
         routes = routes,
         cur = "/stat"
     )
+
+@app.errorhandler(HTTPException)
+def handle_exception(e):
+    return render_template("error.html", code = e.code, title = f'{e.code} {e.name.upper()}')
 
 if __name__ == "__main__":
     app.run(debug=True, port=8888)

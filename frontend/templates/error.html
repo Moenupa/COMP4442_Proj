@@ -1,0 +1,25 @@
+<html>
+  <head>
+    <title>{{ title }}</title>
+    <meta name="author" content="Nate Watson" />
+    <meta name="copyright" content="Copyright Nate Watson; https://codepen.io/nw/pen/WQmxYY">
+  </head>
+  <body>
+    <div class="content">
+      <canvas class="snow" id="snow"></canvas>
+      <div class="main-text">
+        <h1>Aw jeez.<br />An error just occurred.</h1>
+        <a class="home-link" href="javascript:history.back()"
+          >Hitch a ride back.</a
+        >
+      </div>
+      <div class="ground">
+        <div class="mound">
+          <div class="mound_text">{{ code }}</div>
+          <div class="mound_spade"></div>
+        </div>
+      </div>
+    </div>
+    <style>@import url(http://fonts.cdnfonts.com/css/dosis);body,html{height:100%;min-height:450px;font-family:Dosis,sans-serif;font-size:32px;font-weight:500;color:#5d7399;margin:0}.content{height:100%;position:relative;z-index:1;background-color:#d2e1ec;background-image:linear-gradient(to bottom,#bbcfe1 0,#e8f2f6 80%);overflow:hidden}.snow{position:absolute;top:0;left:0;pointer-events:none;z-index:20}.main-text{padding:20vh 20px 0 20px;text-align:center;line-height:2em;font-size:5vh}.home-link{font-size:.6em;font-weight:400;color:inherit;text-decoration:none;opacity:.6;border-bottom:1px dashed rgba(93,115,153,.5)}.home-link:hover{opacity:1}.ground{height:160px;width:100%;position:absolute;bottom:0;left:0;background:#f6f9fa;box-shadow:0 0 10px 10px #f6f9fa}.ground:after,.ground:before{content:"";display:block;width:250px;height:250px;position:absolute;top:-62.5px;z-index:-1;background:0 0;transform:scaleX(.2) rotate(45deg)}.ground:after{left:50%;margin-left:-166.6666666667px;box-shadow:-250px 350px 15px #9dabc4,-590px 610px 15px #7e90b0,-855px 945px 15px #a4b1c8,-1215px 1185px 15px #adb9cd,-1505px 1495px 15px #aab6cb,-1820px 1780px 15px #91a1bc,-2130px 2070px 15px #bac4d5,-2425px 2375px 15px #a1aec6,-2675px 2725px 15px #b0bccf,-2995px 3005px 15px #bac4d5,-3305px 3295px 15px #9dabc4,-3565px 3635px 15px #8e9eba,-3905px 3895px 15px #9dabc4,-4195px 4205px 15px #94a3be,-4545px 4455px 15px #97a6c0,-4840px 4760px 15px #8193b2}.ground:before{right:50%;margin-right:-166.6666666667px;box-shadow:330px -270px 15px #8496b4,555px -645px 15px #b0bccf,860px -940px 15px #9dabc4,1180px -1220px 15px #8e9eba,1500px -1500px 15px #8496b4,1770px -1830px 15px #b0bccf,2150px -2050px 15px #aab6cb,2355px -2445px 15px #a4b1c8,2665px -2735px 15px #aab6cb,2980px -3020px 15px #97a6c0,3340px -3260px 15px #94a3be,3605px -3595px 15px #9aa9c2,3860px -3940px 15px #8e9eba,4165px -4235px 15px #8e9eba,4510px -4490px 15px #b7c1d3,4790px -4810px 15px #8a9bb8}.mound{margin-top:-80px;font-weight:800;font-size:180px;text-align:center;color:#dd4040;pointer-events:none}.mound:before{content:"";display:block;width:600px;height:200px;position:absolute;left:50%;margin-left:-300px;top:50px;z-index:1;border-radius:100%;background-color:#e8f2f6;background-image:linear-gradient(to bottom,#dee8f1,#f6f9fa 60px)}.mound:after{content:"";display:block;width:28px;height:6px;position:absolute;left:50%;margin-left:-150px;top:68px;z-index:2;background:#dd4040;border-radius:100%;transform:rotate(-15deg);box-shadow:-56px 12px 0 1px #dd4040,-126px 6px 0 2px #dd4040,-196px 24px 0 3px #dd4040}.mound_text{transform:rotate(6deg)}.mound_spade{display:block;width:35px;height:30px;position:absolute;right:50%;top:42%;margin-right:-250px;z-index:0;transform:rotate(35deg);background:#dd4040}.mound_spade:after,.mound_spade:before{content:"";display:block;position:absolute}.mound_spade:before{width:40%;height:30px;bottom:98%;left:50%;margin-left:-20%;background:#dd4040}.mound_spade:after{width:100%;height:30px;top:-55px;left:0;box-sizing:border-box;border:10px solid #dd4040;border-radius:4px 4px 20px 20px}</style>
+  </body>
+</html>

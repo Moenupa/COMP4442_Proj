@@ -23,7 +23,7 @@ class DBConnector():
         self.summary_table_name = os.getenv("SUMMARY_TABLE")
         self.speed_table_name = os.getenv("SPEED_TABLE")
         self.host = os.getenv("HOST")
-        self.user = os.getenv("USER")
+        self.user = os.getenv("ADMIN")
         self.port = os.getenv("PORT")
         self.passwd = os.getenv("PASSWD")
     

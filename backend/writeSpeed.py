@@ -25,9 +25,9 @@ def writeAllData():
                     continue
                 else:
                     after_epoch = str(int((datetime.strptime(time.replace('\r', ''), p) - epoch).total_seconds() * 1000))
-                    query = f"insert into {connector.speed_table_name} (DriverID, Time, Speed) values (\"{0}\",{1},{2})".format(driver, after_epoch, speed)
+                    query = f"insert into {connector.speed_table_name} (DriverID, Time, Speed) values (\"{driver}\",{after_epoch},{speed})"
                     cursor.execute(query)
-                    print("inserting ({}, {}, {})\r".format(driver, after_epoch, speed), end='')
+                    print(f"inserting ({driver}, {after_epoch}, {speed}) {''*10}\r", end='')
     print("writing complete. %40s" % (''))
 
 if __name__ == '__main__':
