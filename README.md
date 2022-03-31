@@ -16,6 +16,45 @@
 └── table.sql               # sql to set up the table
 ```
 
+## Deployment
+
+1. Create a new mysql database on AWS. Make sure to assign it to a correct security group. Otherwise you may not even establish connection with the database.
+2. Modify `.env` file to update the following keys:
+    ```ini
+    HOST="<database url>"
+    ADMIN="<user, default is admin>"
+    PORT="<port, default is 3306>"
+    PASSWD="<password>"
+    ```
+3. Setup and start a virtual environment
+    ```sh
+    cd ../COMP4442_Proj             # change dir to the project directory
+    pip install virtualenv          # install a virtual environment
+    virtualenv env                  # initialize a virtual environment into env
+    source env/bin/activate         # start a virtual environment session
+    ```
+4. Install python dependencies in virtual environment
+    ```sh
+    pip install -r requirements.txt
+    ```
+5. Initialize database schema  
+    ```sh
+    python ./backend/initDB.py
+    ```
+    If you do not see `Successfully connect to database message`, recheck step1 and step2.  
+6. Write into database
+    ```sh
+    python ./backend/writeStats.py
+    python ./backend/writeSpeed.py  # this may take ages
+    ```
+    Note that executing `python ./backend/writeSpeed.py` may take a very long time.  
+    Yon can consider execute it after step 7 or leave it alone.
+7. Start a new terminal session and start flask
+    ```sh
+    python ./frontend/main.py
+    ```
+8. Hit the link in step7's prompt or simply visit [http://localhost:8888/](http://localhost:8888/)
+
 ## Dataset representation
 
 | INDEX | DATASET COLUMN           |
