@@ -9,5 +9,5 @@ cursor.execute(f"CREATE TABLE {connector.summary_table_name} (DriverID varchar(4
 print(f"`{connector.summary_table_name}` table created.")
 
 cursor.execute(f"DROP TABLE IF EXISTS {connector.speed_table_name};")
-cursor.execute(f"CREATE TABLE {connector.speed_table_name} (ID int(11) unsigned NOT NULL AUTO_INCREMENT, DriverID varchar(40) NOT NULL, Time bigint(11) NOT NULL, Speed int(11) NOT NULL, PRIMARY KEY (ID)) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT charset=utf8;")
+cursor.execute(f"CREATE TABLE {connector.speed_table_name} (ID int(11) unsigned NOT NULL AUTO_INCREMENT, DriverID varchar(40) NOT NULL, CTime bigint(11) NOT NULL, Speed int(11) NOT NULL, PRIMARY KEY (ID)) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT charset=utf8;")
 print(f"`{connector.speed_table_name}` table created.")

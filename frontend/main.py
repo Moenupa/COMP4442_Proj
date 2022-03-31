@@ -74,7 +74,7 @@ def API_speed(driverID):
         latest = 0
         cur_driver = driverID
     
-    query = f"select ID, DriverID, Time, Speed from {os.getenv('SPEED_TABLE')} where DriverID = \"{driverID}\" and ID > {latest};"
+    query = f"select ID, DriverID, CTime, Speed from {os.getenv('SPEED_TABLE')} where DriverID = \"{driverID}\" and ID > {latest};"
     cursor.execute(query)
     data = cursor.fetchall()
     

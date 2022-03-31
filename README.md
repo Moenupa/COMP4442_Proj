@@ -1,4 +1,4 @@
-# comp4442
+# COMP4442-Proj
 
 ## Project Structure
 
@@ -9,7 +9,7 @@
 ├── drive_stat_in/          # source code for processing driving data
 ├── drive_stat_out/         # output of driving statistics
 ├── env/                    # local virtualenv, need to set up locally
-├── web/                    # Web Flask application
+├── frontend/               # frontend code
 │   ├── template/           # html templates
 │   ├── main.py             # End-to-end, integration tests (alternatively `e2e`)
 │   └── write.py            # Write to the database with real-time data
@@ -18,26 +18,55 @@
 
 ## Dataset representation
 
-```py
-dataset = {
-    'driverID': 0,
-    'carPlateNumber': 1,
-    'Latitude': 2,
-    'Longtitude': 3,
-    'Speed': 4,
-    'Direction': 5,
-    'siteName': 6,
-    'Time': 7,
-    'isRapidlySpeedup': 8,
-    'isRapidlySlowdown': 9,
-    'isNeutralSlide': 10,
-    'isNeutralSlideFinished': 11,
-    'neutralSlideTime': 12,
-    'isOverspeed': 13,
-    'isOverspeedFinished': 14,
-    'overspeedTime': 15,
-    'isFatigueDriving': 16,
-    'isHthrottleStop': 17,
-    'isOilLeak': 18
-}
+| INDEX | DATASET COLUMN           |
+| :---: | :----------------------- |
+|   0   | `driverID`               |
+|   1   | `carPlateNumber`         |
+|   2   | `Latitude`               |
+|   3   | `Longtitude`             |
+|   4   | `Speed`                  |
+|   5   | `Direction`              |
+|   6   | `siteName`               |
+|   7   | `Time`                   |
+|   8   | `isRapidlySpeedup`       |
+|   9   | `isRapidlySlowdown`      |
+|  10   | `isNeutralSlide`         |
+|  11   | `isNeutralSlideFinished` |
+|  12   | `neutralSlideTime`       |
+|  13   | `isOverspeed`            |
+|  14   | `isOverspeedFinished`    |
+|  15   | `overspeedTime`          |
+|  16   | `isFatigueDriving`       |
+|  17   | `isHthrottleStop`        |
+|  18   | `isOilLeak`              |
+
+## Database Schema
+
+```sql
+DROP TABLE IF EXISTS {summary_table_name};
+CREATE TABLE {summary_table_name} (
+    DriverID varchar(40) NOT NULL, 
+    carPlate varchar(40) NOT NULL, 
+    speedUp varchar(40) NOT NULL, 
+    slowDown varchar(40) NOT NULL, 
+    neutralSlide varchar(40) NOT NULL, 
+    neutralSlideTime varchar(40) NOT NULL, 
+    overspeed varchar(40) NOT NULL, 
+    overspeedTime varchar(40) NOT NULL, 
+    fatigue varchar(40) NOT NULL, 
+    hthrottleStop varchar(40) NOT NULL, 
+    oilLeak varchar(40) NOT NULL, 
+    PRIMARY KEY (DriverID)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+```
+
+```sql
+DROP TABLE IF EXISTS {speed_table_name};
+CREATE TABLE {speed_table_name} (
+    ID int(11) unsigned NOT NULL AUTO_INCREMENT, 
+    DriverID varchar(40) NOT NULL, 
+    Ctime bigint(11) NOT NULL, 
+    Speed int(11) NOT NULL, 
+    PRIMARY KEY (ID)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT charset=utf8;
 ```
