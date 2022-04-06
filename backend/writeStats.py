@@ -18,7 +18,7 @@ for item in items:
                 (k, v) = literal_eval(record)
                 if len(k) == 0:
                     continue
-                query = f"INSERT INTO {connector.summary_table_name} (DriverID, {item}) VALUES (\"{k}\", \"{v}\") on DUPLICATE KEY UPDATE {item} = VALUES ({item});"
+                query = f"INSERT INTO {connector.SUMMARY_TABLE} (DriverID, {item}) VALUES (\"{k}\", \"{v}\") on DUPLICATE KEY UPDATE {item} = VALUES ({item});"
                 cursor.execute(query)
                 print("insert success:", k, v, "\r", end="")
                 

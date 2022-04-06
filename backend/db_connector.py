@@ -19,21 +19,21 @@ class DBConnector():
         ```
     '''
     def __init__(self) -> None:
-        self.database_name = os.getenv("DATABASE")
-        self.summary_table_name = os.getenv("SUMMARY_TABLE")
-        self.speed_table_name = os.getenv("SPEED_TABLE")
-        self.host = os.getenv("HOST")
-        self.user = os.getenv("ADMIN")
-        self.port = os.getenv("PORT")
-        self.passwd = os.getenv("PASSWD")
+        self.HOST=os.getenv("HOST")
+        self.USER=os.getenv("USER")
+        self.PORT=os.getenv("PORT")
+        self.PASSWD=os.getenv("PASSWD")
+        self.DB_NAME=os.getenv("DB_NAME")
+        self.SUMMARY_TABLE=os.getenv("SUMMARY_TABLE")
+        self.SPEED_TABLE=os.getenv("SPEED_TABLE")
     
     def establish_connection(self):
         # establish db connection
         self.connection = mysql.connector.connect(
-            host = self.host, 
-            user = self.user, 
-            port = self.port, 
-            passwd = self.passwd, 
+            host = self.HOST, 
+            user = self.USER, 
+            port = self.PORT, 
+            passwd = self.PASSWD, 
             autocommit = True
         )
     
@@ -52,9 +52,9 @@ class DBConnector():
         Get a cursor.
         '''
         cursor = self.get_mysql_cursor()
-        cursor.execute(f"DROP DATABASE if exists {self.database_name};")
-        cursor.execute(f"CREATE DATABASE {self.database_name} CHARACTER SET utf8 COLLATE utf8_general_ci;")
-        cursor.execute(f"USE {self.database_name};")
+        cursor.execute(f"DROP DATABASE if exists {self.DB_NAME};")
+        cursor.execute(f"CREATE DATABASE {self.DB_NAME} CHARACTER SET utf8 COLLATE utf8_general_ci;")
+        cursor.execute(f"USE {self.DB_NAME};")
         return cursor
 
     def get_db_cursor(self):
@@ -63,5 +63,5 @@ class DBConnector():
         Get a cursor.
         '''
         cursor = self.get_mysql_cursor()
-        cursor.execute(f"USE {self.database_name};")
+        cursor.execute(f"USE {self.DB_NAME};")
         return cursor

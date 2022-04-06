@@ -13,8 +13,8 @@ epoch = datetime(1970, 1, 1)
 p = '%Y-%m-%d %H:%M:%S'
 
 def writeAllData():
-    cursor.execute(f"TRUNCATE TABLE {connector.speed_table_name};")
-    print(f'cleared all data in table {connector.speed_table_name}, writing...')
+    cursor.execute(f"TRUNCATE TABLE {connector.SPEED_TABLE};")
+    print(f'cleared all data in table {connector.SPEED_TABLE}, writing...')
     
     path = './drive_stat_out/speed/'
     for filename in os.listdir(path):
@@ -25,7 +25,7 @@ def writeAllData():
                     continue
                 else:
                     after_epoch = str(int((datetime.strptime(time.replace('\r', ''), p) - epoch).total_seconds() * 1000))
-                    query = f"insert into {connector.speed_table_name} (DriverID, CTime, Speed) values (\"{driver}\",{after_epoch},{speed})"
+                    query = f"insert into {connector.SPEED_TABLE} (DriverID, CTime, Speed) values (\"{driver}\",{after_epoch},{speed})"
                     cursor.execute(query)
                     print(f"inserting ({driver}, {after_epoch}, {speed}) {''*10}\r", end='')
     print("writing complete. %40s" % (''))

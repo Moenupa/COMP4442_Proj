@@ -1,9 +1,6 @@
 from flask import Flask, render_template
 import json
-import random
-import time
-import os
-from db_connector import DBConnector
+from web.db_connector import DBConnector
 from werkzeug.exceptions import HTTPException
 
 app = Flask(__name__, static_url_path='/static')
@@ -74,7 +71,7 @@ def API_speed(driverID):
         latest = 0
         cur_driver = driverID
     
-    query = f"select ID, DriverID, CTime, Speed from {os.getenv('SPEED_TABLE')} where DriverID = \"{driverID}\" and ID > {latest};"
+    query = f'select ID, DriverID, CTime, Speed from {connector.SPEED_TABLE} where DriverID = \"{driverID}\" and ID > {latest};'
     cursor.execute(query)
     data = cursor.fetchall()
     
@@ -90,20 +87,15 @@ def API_drivers():
     # return json.dumps(['driver%02d' % (i) for i in range(1,11)])
     cursor = connector.get_db_cursor()
     
-    query = f"select DriverID from {os.getenv('SUMMARY_TABLE')};"
+    query = f'select DriverID from {connector.SUMMARY_TABLE};'
     cursor.execute(query)
     data = cursor.fetchall()
     return json.dumps([id for row in data for id in row])
 
-@app.route('/test')
-def test():
-    data = [['driverID', time.time(), random.randint(10,60)] for i in range(random.randint(2,5))]
-    return json.dumps(data)
-
 @app.route('/stat')
 def stat():
     cursor = connector.get_db_cursor()
-    cursor.execute(f"select * from {os.getenv('SUMMARY_TABLE')};")
+    cursor.execute(f'select * from {connector.SUMMARY_TABLE};')
     data = cursor.fetchall()
     stats = [
         {
@@ -176,4 +168,4 @@ def handle_exception(e):
     return render_template("error.html", code = e.code, title = f'{e.code} {e.name.upper()}')
 
 if __name__ == "__main__":
-    app.run(debug=True, port=8888)
+    app.run(debug=True)
