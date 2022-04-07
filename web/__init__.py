@@ -1,5 +1,6 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 import json
+
 from web.db_connector import DBConnector
 from werkzeug.exceptions import HTTPException
 
@@ -7,7 +8,6 @@ app = Flask(__name__, static_url_path='/static')
 
 connector = DBConnector()
 latest = 0
-cur_driver = ''
 routes = {
     '/': {
         'title': 'Welcome',
@@ -64,14 +64,14 @@ def monitor():
 
 @app.route('/api/speed/<driverID>')
 def API_speed(driverID):
-    global latest, cur_driver
+    global latest
     cursor = connector.get_db_cursor()
-
-    if cur_driver != driverID:
-        latest = 0
-        cur_driver = driverID
     
-    query = f'select ID, DriverID, CTime, Speed from {connector.SPEED_TABLE} where DriverID = \"{driverID}\" and ID > {latest};'
+    refresh = request.args.get('refresh', default = 0, type = int)
+    if refresh == 1:
+        latest = 0
+    
+    query = f'select * from {connector.SPEED_TABLE} where DriverID = \"{driverID}\" and ID > {latest};'
     cursor.execute(query)
     data = cursor.fetchall()
     
@@ -80,7 +80,18 @@ def API_speed(driverID):
     
     # print(query)
     # print('last record:', data[-1])
-    return json.dumps([row[2:] for row in data])
+    connector.close_connection()
+    return json.dumps([row[2:4] for row in data])
+
+@app.route('/api/isOverspeed/<driverID>')
+def API_overspeed(driverID):
+    cursor = connector.get_db_cursor()
+    query = f'select * from {connector.SPEED_TABLE} where DriverID = \"{driverID}\" ORDER BY ID DESC LIMIT 1;'
+    cursor.execute(query)
+    data = cursor.fetchall()
+    connector.close_connection()
+    print(data[0][-1])
+    return json.dumps(data[0][-1])
 
 @app.route('/api/drivers')
 def API_drivers():
@@ -90,6 +101,7 @@ def API_drivers():
     query = f'select DriverID from {connector.SUMMARY_TABLE};'
     cursor.execute(query)
     data = cursor.fetchall()
+    connector.close_connection()
     return json.dumps([id for row in data for id in row])
 
 @app.route('/stat')

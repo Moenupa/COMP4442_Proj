@@ -20,7 +20,7 @@ class DBConnector():
     '''
     def __init__(self) -> None:
         self.HOST=os.getenv("HOST")
-        self.USER=os.getenv("USER")
+        self.ADMIN=os.getenv("ADMIN")
         self.PORT=os.getenv("PORT")
         self.PASSWD=os.getenv("PASSWD")
         self.DB_NAME=os.getenv("DB_NAME")
@@ -31,19 +31,23 @@ class DBConnector():
         # establish db connection
         self.connection = mysql.connector.connect(
             host = self.HOST, 
-            user = self.USER, 
+            user = self.ADMIN, 
             port = self.PORT, 
             passwd = self.PASSWD, 
             autocommit = True
         )
+        
+    def close_connection(self):
+        if self.connection:
+            self.connection.close()
     
-    def get_mysql_cursor(self):
+    def create_mysql_cursor(self):
         '''
         Establish a connection to mysql;
         Get a cursor.
         '''
         self.establish_connection()
-        return self.connection.cursor()
+        self.cursor = self.connection.cursor()
     
     def create_db_and_get_cursor(self):
         '''
@@ -51,17 +55,17 @@ class DBConnector():
         Establish connection;
         Get a cursor.
         '''
-        cursor = self.get_mysql_cursor()
-        cursor.execute(f"DROP DATABASE if exists {self.DB_NAME};")
-        cursor.execute(f"CREATE DATABASE {self.DB_NAME} CHARACTER SET utf8 COLLATE utf8_general_ci;")
-        cursor.execute(f"USE {self.DB_NAME};")
-        return cursor
+        self.create_mysql_cursor()
+        self.cursor.execute(f"DROP DATABASE if exists {self.DB_NAME};")
+        self.cursor.execute(f"CREATE DATABASE {self.DB_NAME} CHARACTER SET utf8 COLLATE utf8_general_ci;")
+        self.cursor.execute(f"USE {self.DB_NAME};")
+        return self.cursor
 
     def get_db_cursor(self):
         '''
         Establish a connection to the database;
         Get a cursor.
         '''
-        cursor = self.get_mysql_cursor()
-        cursor.execute(f"USE {self.DB_NAME};")
-        return cursor
+        self.create_mysql_cursor()
+        self.cursor.execute(f"USE {self.DB_NAME};")
+        return self.cursor

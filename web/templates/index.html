@@ -6,7 +6,12 @@
     <meta name="language" content="en" />
 
     <title>Driving Statistics</title>
-    <link rel="icon" href="{{url_for('static', filename='favicon.svg')}}" sizes="any" type="image/svg+xml">
+    <link
+      rel="icon"
+      href="{{url_for('static', filename='favicon.svg')}}"
+      sizes="any"
+      type="image/svg+xml"
+    />
     <meta name="description" content="Statistics of Driving Data" />
     <meta
       name="keywords"
@@ -24,7 +29,7 @@
     <script src="https://code.highcharts.com/modules/annotations.js"></script>
     <script src="https://code.highcharts.com/stock/modules/data.js"></script>
 
-    <meta id="drivers" data-drivers="{{drivers}}"/>
+    <meta id="drivers" data-drivers="{{drivers}}" />
   </head>
   <body class="bg-gray-800 font-sans leading-normal tracking-normal mt-12">
     <header>
@@ -38,7 +43,9 @@
           >
             <a href="#" aria-label="DriveStats">
               <i class="mdi mdi-car-connected"></i>
-              <span class="text-white no-underline ml-3 font-bold">DriveStats</span>
+              <span class="text-white no-underline ml-3 font-bold"
+                >DriveStats</span
+              >
             </a>
           </div>
 
@@ -46,21 +53,35 @@
             class="flex flex-1 w-full md:w-1/3 justify-center md:justify-start text-white px-2"
           >
             <span class="relative w-full">
-              <button 
-                id="btn-dropdown" 
-                data-dropdown-toggle="dropdown" 
-                class="text-white bg-gray-900 transition-all w-full rounded-lg px-4 py-1 text-center inline-flex items-center active:text-gray-600 active:bg-gray-400 hover:bg-gray-200 hover:text-gray-800 disabled:bg-transparent disabled:text-transparent" 
-                type="button" 
-                {%if not drivers%}disabled{%endif%}
+              <button
+                id="btn-dropdown"
+                data-dropdown-toggle="dropdown"
+                class="text-white bg-gray-900 transition-all w-full rounded-lg px-4 py-1 text-center inline-flex items-center active:text-gray-600 active:bg-gray-400 hover:bg-gray-200 hover:text-gray-800 disabled:bg-transparent disabled:text-transparent"
+                type="button"
+                {%if
+                not
+                drivers%}disabled{%endif%}
               >
                 <span class="w-full">Select Driver</span>
-                <span class="mdi mdi-chevron-down mdi-24px ml-1 -mr-2 pull-right"></span>
+                <span
+                  class="mdi mdi-chevron-down mdi-24px ml-1 -mr-2 pull-right"
+                ></span>
               </button>
-              <div id="dropdown" class="hidden z-10 w-full bg-gray-200 rounded shadow absolute left-0 top-12">
-                <ul class="py-1 text-sm text-gray-800 divide-y divide-gray-300" aria-labelledby="btn-dropdown">
+              <div
+                id="dropdown"
+                class="hidden z-10 w-full bg-gray-200 rounded shadow absolute left-0 top-12"
+              >
+                <ul
+                  class="py-1 text-sm text-gray-800 divide-y divide-gray-300"
+                  aria-labelledby="btn-dropdown"
+                >
                   {% for driver in drivers %}
                   <li>
-                    <a href="javascript:" class="block duration-300 py-2 px-6 hover:bg-gray-300 dropdown-driver w-full">{{driver}}</a>
+                    <a
+                      href="javascript:"
+                      class="block duration-300 py-2 px-6 hover:bg-gray-300 dropdown-driver w-full"
+                      >{{driver}}</a
+                    >
                   </li>
                   {% endfor %}
                 </ul>
@@ -85,163 +106,220 @@
                 class="list-reset flex flex-row md:flex-col mx-2 md:mt-3 p-2 md:py-3 text-center md:text-left bg-gray-900 rounded-lg divide-x-8 md:divide-x-0 md:divide-y-8 divide-transparent"
               >
                 {% for route, info in routes.items() %}
-                  <li class="flex-1">
-                    <a
-                      href="{{ route if route != cur else '#' }}"
-                      class="block pb-2 pt-1 md:py-3 md:px-3 md:pl-6 align-middle transition-all duration-300 text-lg no-underline rounded-lg {{ 'text-gray-600' if route != cur else 'bg-gray-600 text-gray-300 shadow' }}  active:text-gray-600 active:bg-gray-400 hover:bg-gray-200 hover:text-gray-800 hover:shadow-xl"
-                    >
-                      <span class="mdi {{ info.get('icon', '') }} p-0 md:mr-3"></span>
-                      <span
-                        class="text-xs md:text-base block md:inline-block"
-                        >{{ info.get('title', 'Route')  }}
-                      </span>
-                    </a>
-                  </li>
+                <li class="flex-1">
+                  <a
+                    href="{{ route if route != cur else '#' }}"
+                    class="block pb-2 pt-1 md:py-3 md:px-3 md:pl-6 align-middle transition-all duration-300 text-lg no-underline rounded-lg {{ 'text-gray-600' if route != cur else 'bg-gray-600 text-gray-300 shadow' }}  active:text-gray-600 active:bg-gray-400 hover:bg-gray-200 hover:text-gray-800 hover:shadow-xl"
+                  >
+                    <span
+                      class="mdi {{ info.get('icon', '') }} p-0 md:mr-3"
+                    ></span>
+                    <span class="text-xs md:text-base block md:inline-block"
+                      >{{ info.get('title', 'Route') }}
+                    </span>
+                  </a>
+                </li>
                 {% endfor %}
               </ul>
             </div>
           </div>
         </nav>
-        <section class="w-full main-content mt-2 ml-2 md:ml-4 pb-16 md:pb-5 bg-gray-800">
+        <section
+          class="w-full main-content mt-2 ml-2 md:ml-4 pb-16 md:pb-5 bg-gray-800"
+        >
           <div class="bg-gray-800 pt-1">
             <div
               class="rounded-tl-3xl bg-gradient-to-r from-blue-900 to-gray-800 py-4 px-8 shadow text-2xl text-white"
             >
-              <h1 class="font-bold">{{ routes.get(cur, {'title': 'Driving Statistics'}).get('title', 'Driving Statistics') }}</h1>
+              <h1 class="font-bold">
+                {{ routes.get(cur, {'title': 'Driving Statistics'}).get('title',
+                'Driving Statistics') }}
+              </h1>
             </div>
           </div>
           {% if msg %}
-            <div class="flex flex-row flex-wrap flex-grow px-8 pt-6 bg-white">
-              {% for m in msg %}
-              <div class="w-full text-lg font-bold mb-2">
-                {{ m }}
+          <div class="flex flex-row flex-wrap flex-grow px-8 pt-6 bg-white">
+            {% for m in msg %}
+            <div class="w-full text-lg font-bold mb-2">{{ m }}</div>
+            {% endfor %}
+          </div>
+          {% endif %} {% if stats %}
+          <div class="flex flex-wrap bg-white">
+            {% for stat in stats %}
+            <div class="w-full l:w-1/2 xl:w-1/3 py-6 px-8">
+              <div
+                class="bg-gradient-to-b from-{{stat.get('color', 'gray')}}-200 to-{{stat.get('color', 'gray')}}-100 border-b-4 border-{{stat.get('color', 'gray')}}-500 rounded-lg shadow-xl p-5"
+              >
+                <div class="flex flex-row items-center">
+                  <div class="flex-shrink pr-4">
+                    <div
+                      class="rounded-full bg-{{stat.get('color', 'gray')}}-600 h-12 w-12 flex justify-center items-center"
+                    >
+                      <span
+                        class="text-white mdi mdi-24px {{ 'mdi-timer-sand' if 'time' in stat.get('title', '') else 'mdi-counter' }}"
+                      ></span>
+                    </div>
+                  </div>
+                  <div class="flex-1 text-right md:text-center">
+                    <h2 class="font-bold uppercase text-gray-600">
+                      {{stat.get('title', 'Statistics')}}
+                    </h2>
+                    <p class="font-bold text-3xl">
+                      <span>{{stat.get('num', 0)}}</span>
+                      <span
+                        class="text-{{stat.get('color', 'gray')}}-500 mdi {{stat.get('icon', '')}}"
+                      ></span>
+                    </p>
+                  </div>
+                </div>
               </div>
-              {% endfor %}
             </div>
-          {% endif %}
-          {% if stats %}
-            <div class="flex flex-wrap bg-white">
-              {% for stat in stats %}
-              <div class="w-full l:w-1/2 xl:w-1/3 py-6 px-8">
+            {% endfor %}
+          </div>
+          {% endif %} {% if table_headers %}
+          <div class="flex flex-row flex-wrap flex-grow bg-white">
+            <div class="w-full p-6">
+              <div class="bg-stone-100 rounded-lg shadow-2xl">
                 <div
-                  class="bg-gradient-to-b from-{{stat.get('color', 'gray')}}-200 to-{{stat.get('color', 'gray')}}-100 border-b-4 border-{{stat.get('color', 'gray')}}-500 rounded-lg shadow-xl p-5"
+                  class="bg-gradient-to-b from-stone-200 to-stone-100 uppercase text-stone-800 rounded-tl-lg rounded-tr-lg p-6"
                 >
-                  <div class="flex flex-row items-center">
-                    <div class="flex-shrink pr-4">
-                      <div
-                        class="rounded-full bg-{{stat.get('color', 'gray')}}-600 h-12 w-12 flex justify-center items-center"
-                      ><span class="text-white mdi mdi-24px {{ 'mdi-timer-sand' if 'time' in stat.get('title', '') else 'mdi-counter' }}"></span></div>
-                    </div>
-                    <div class="flex-1 text-right md:text-center">
-                      <h2 class="font-bold uppercase text-gray-600">
-                        {{stat.get('title', 'Statistics')}}
-                      </h2>
-                      <p class="font-bold text-3xl">
-                        <span>{{stat.get('num', 0)}}</span>
-                        <span
-                          class="text-{{stat.get('color', 'gray')}}-500 mdi {{stat.get('icon', '')}}"
-                        ></span>
-                      </p>
-                    </div>
-                  </div>
+                  <h2 class="font-bold uppercase">Statistic Table</h2>
                 </div>
-              </div>
-              {% endfor %}
-            </div>
-          {% endif %}
-          {% if table_headers %}
-            <div class="flex flex-row flex-wrap flex-grow bg-white">
-              <div class="w-full p-6">
-                <div class="bg-stone-100 rounded-lg shadow-2xl">
-                  <div
-                    class="bg-gradient-to-b from-stone-200 to-stone-100 uppercase text-stone-800 rounded-tl-lg rounded-tr-lg p-6"
-                  >
-                    <h2 class="font-bold uppercase">Statistic Table</h2>
-                  </div>
-                  <div class="pb-2">
-                    <table class="table-auto w-full">
-                      <thead>
-                        <tr>
-                          {% for header in table_headers %}
-                          <th
-                            scope="col"
-                            class="text-sm font-medium text-gray-900 px-6 pb-4 text-left"
-                          >
-                            {{header}}
-                          </th>
-                          {% endfor %}
-                        </tr>
-                      </thead>
-                      <tbody class="divide-y divide-stone-200">
-                        {% if table_data %}
-                        {% for cols in table_data %}
-                          <tr
-                            class="bg-white transition duration-300 hover:bg-transparent"
-                          >
-                            <td
-                              class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
-                            >
-                              {{ cols[0] }}
-                            </td>
-                            {% for col in cols[1:] %}
-                            <td
-                              class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
-                            >
-                              {{ col }}
-                            </td>
-                            {% endfor %}
-                          </tr>
+                <div class="pb-2">
+                  <table class="table-auto w-full">
+                    <thead>
+                      <tr>
+                        {% for header in table_headers %}
+                        <th
+                          scope="col"
+                          class="text-sm font-medium text-gray-900 px-6 pb-4 text-left"
+                        >
+                          {{header}}
+                        </th>
                         {% endfor %}
-                        {% else %}
-                          <div class="text-md text-gray-900 font-light px-6 py-4 whitespace-nowrap content-center bg-white transition duration-300 hover:bg-transparent uppercase">
-                            error when fetching data
-                          </div>
-                        {% endif %}
-                      </tbody>
-                    </table>
-                  </div>
+                      </tr>
+                    </thead>
+                    <tbody class="divide-y divide-stone-200">
+                      {% if table_data %} {% for cols in table_data %}
+                      <tr
+                        class="bg-white transition duration-300 hover:bg-transparent"
+                      >
+                        <td
+                          class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
+                        >
+                          {{ cols[0] }}
+                        </td>
+                        {% for col in cols[1:] %}
+                        <td
+                          class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
+                        >
+                          {{ col }}
+                        </td>
+                        {% endfor %}
+                      </tr>
+                      {% endfor %} {% else %}
+                      <div
+                        class="text-md text-gray-900 font-light px-6 py-4 whitespace-nowrap content-center bg-white transition duration-300 hover:bg-transparent uppercase"
+                      >
+                        error when fetching data
+                      </div>
+                      {% endif %}
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </div>
-          {% endif %}
-          {% if monitor %}
-            <div class="bg-white">
-              <div id="monitor" class="w-full h-5/6 pr-2">
+          </div>
+          {% endif %} {% if monitor %}
+          <div class="bg-white">
+            <div id="monitor" class="w-full h-5/6 pr-2"></div>
+          </div>
+          <div
+            id="popup-modal"
+            tabindex="-1"
+            class="hidden fixed z-50 inset-0 flex justify-center items-center bg-gray-400/50"
+          >
+            <div class="relative p-4 w-screen md:h-auto md:max-w-md">
+              <div class="relative bg-white rounded-lg shadow-xl">
+                <div class="p-6 text-center">
+                  <div class="text-red-600">
+                    <span><i class="mdi mdi-alert mdi-48px"></i></span>
+                  </div>
+                  <h3 class="mb-0.5 text-lg font-normal text-gray-800">
+                    Driver
+                  </h3>
+                  <h3
+                    class="mb-2 text-lg font-normal text-gray-800"
+                  >
+                    OVERSPEED DETECTED
+                  </h3>
+                  <button
+                    id="close-modal"
+                    data-modal-toggle="popup-modal"
+                    type="button"
+                    class="text-white bg-orange-600 hover:bg-orange-800 active:ring-2 active:outline-none active:ring-orange-300 font-medium rounded-lg text-sm inline-flex items-center px-4 py-2 text-center"
+                  >
+                    IGNORE
+                  </button>
+                </div>
               </div>
             </div>
+          </div>
           {% endif %}
           <div class="rounded-bl-3xl bg-white h-6 w-full mb-4"></div>
         </section>
       </div>
     </main>
     <script type="text/javascript">
-      const drivers = eval($('#drivers').data('drivers'));
-      var selection = '';
-      $('#btn-dropdown').click(() => {
-        $('#dropdown').toggleClass('hidden');
-        $('#btn-dropdown .mdi').toggleClass('mdi-chevron-down mdi-chevron-up');
-      });
-      $('#dropdown .dropdown-driver').click((e) => {
-        $('#dropdown').toggleClass('hidden');
-        $('#btn-dropdown .mdi').toggleClass('mdi-chevron-down mdi-chevron-up');
-        selection = e.target.text;
-        $('#btn-dropdown>span').first().text(selection);
-        console.log('selected: ' + selection);
+      const drivers = eval($("#drivers").data("drivers"));
+      var selection = "";
+      var suppress = false;
+      const toggleDropdown = () => {
+        $("#dropdown").toggleClass("hidden");
+        $("#btn-dropdown .mdi").toggleClass("mdi-chevron-down mdi-chevron-up");
+      };
+      const setSelection = (s) => {
+        selection = s || "";
+        console.log("selected: " + selection);
+        $("#btn-dropdown>span").first().text(s);
+        $("#popup-modal>h3").first().text(`Driver ${s}`)
+      };
+      const setSuppress = (b) => {
+        suppress = b;
+        if (b) $("#popup-modal").addClass("hidden");
+      }
+      $("#btn-dropdown").click(() => {toggleDropdown()});
+      $("#dropdown .dropdown-driver").click((e) => {
+        toggleDropdown();
+        setSelection(e.target.text);
         refresh();
+        setSuppress(false);
       });
-      const speed_api = () => `/api/speed/${selection || drivers[0]}`
+      const speed_api = (refresh) => `/api/speed/${selection || drivers[0]}?refresh=${refresh}`;
+      const overspeed_api = () => `/api/isOverspeed/${selection || drivers[0]}`;
+      $("#close-modal").click(() => {setSuppress(true)});
+      const warn = () => {
+        $.getJSON(overspeed_api(), (e) => {
+          let isOverspeed = !!e;
+          if (!isOverspeed) setSuppress(false);
+          else $("#popup-modal").toggleClass("hidden", !isOverspeed || suppress);
+        });
+      };
+      const autoWarn = () => {
+        setInterval(warn, 5000);
+      }
       const reload = () => {
+        $.getJSON(speed_api(), (e) => {
+          $.each(e, (i, v) => {
+            chart.series[0].addPoint(v);
+            getMinMax(chart);
+          });
+        });
+      };
+      const autoReload = () => {
         setInterval(() => {
-          $.getJSON(
-            speed_api(),
-            (e) => {
-              $.each(e, (i, v) => {
-                chart.series[0].addPoint(v);
-                getMinMax(chart);
-              })
-            }
-          )
-        }, 10000);
+          reload();
+        }, 30000);
       };
       var chart;
       var minMax = {};
@@ -261,84 +339,93 @@
           xMin: chart.series[0].processedXData[minIndex],
           xMax: chart.series[0].processedXData[maxIndex],
           yMin,
-          yMax
+          yMax,
         };
-      }
+      };
       const refresh = () => {
-        $.getJSON(
-          speed_api(),
-          (data) => {
-            chart = new Highcharts.stockChart(`monitor`, {
-              chart: {
-                zoomType: 'x',
-                events: {
-                  load: reload
-                }
+        $.getJSON(speed_api(1), (data) => {
+          chart = new Highcharts.stockChart(`monitor`, {
+            chart: {
+              zoomType: "x",
+              events: {
+                load: autoReload,
               },
-              xAxis: {
-                type: 'datetime'
-              },
-              annotations: [{
-                draggable: '',
-                shapes: [{
-                  type: 'path',
-                  points: [
-                    annotation => {
-                      getMinMax(annotation.chart);
-  
-                      return {
-                        x: annotation.chart.xAxis[0].min,
+            },
+            xAxis: {
+              type: "datetime",
+            },
+            annotations: [
+              {
+                draggable: "",
+                shapes: [
+                  {
+                    type: "path",
+                    points: [
+                      (annotation) => {
+                        getMinMax(annotation.chart);
+
+                        return {
+                          x: annotation.chart.xAxis[0].min,
+                          xAxis: 0,
+                          y: (minMax.yMin + minMax.yMax) / 2,
+                          yAxis: 0,
+                        };
+                      },
+                      (annotation) => ({
+                        x: annotation.chart.xAxis[0].max,
                         xAxis: 0,
                         y: (minMax.yMin + minMax.yMax) / 2,
-                        yAxis: 0
-                      };
-                    },
-                    annotation => ({
-                      x: annotation.chart.xAxis[0].max,
+                        yAxis: 0,
+                      }),
+                    ],
+                  },
+                ],
+                labels: [
+                  {
+                    point: () => ({
+                      x: minMax.xMax,
+                      xAxis: 0,
+                      y: minMax.yMax,
+                      yAxis: 0,
+                    }),
+                    format: "max: {y}",
+                  },
+                  {
+                    point: () => ({
+                      x: minMax.xMin,
+                      xAxis: 0,
+                      y: minMax.yMin,
+                      yAxis: 0,
+                    }),
+                    format: "min: {y}",
+                  },
+                  {
+                    point: (annotation) => ({
+                      x: annotation.chart.xAxis[0].min + 10e7,
                       xAxis: 0,
                       y: (minMax.yMin + minMax.yMax) / 2,
-                      yAxis: 0
-                    })
-                  ]
-                }],
-                labels: [{
-                  point: () => ({
-                    x: minMax.xMax,
-                    xAxis: 0,
-                    y: minMax.yMax,
-                    yAxis: 0
-                  }),
-                  format: 'max: {y}'
-                }, {
-                  point: () => ({
-                    x: minMax.xMin,
-                    xAxis: 0,
-                    y: minMax.yMin,
-                    yAxis: 0
-                  }),
-                  format: 'min: {y}'
-                }, {
-                  point: annotation => ({
-                    x: annotation.chart.xAxis[0].min + 10e7,
-                    xAxis: 0,
-                    y: (minMax.yMin + minMax.yMax) / 2,
-                    yAxis: 0
-                  }),
-                  y: 11,
-                  x: 30,
-                  clip: false,
-                  overflow: 'none',
-                  format: 'avg: {y}'
-                }]
-              }],
-              series: [{
-                data: data
-              }]
-            });
-          }
-        );
+                      yAxis: 0,
+                    }),
+                    y: 11,
+                    x: 30,
+                    clip: false,
+                    overflow: "none",
+                    format: "avg: {y}",
+                  },
+                ],
+              },
+            ],
+            series: [
+              {
+                data: data,
+              },
+            ],
+          });
+        });
       };
+      setSelection(drivers[0]);
       refresh();
+      autoWarn();
     </script>
   </body>
 </html>
