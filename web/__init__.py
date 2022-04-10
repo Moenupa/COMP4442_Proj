@@ -34,7 +34,7 @@ def hello_world():
         routes = routes,
         cur = "/about",
         msg = [
-            'About page'
+            "The page is developed by the group \"JustForCredit\" using Python and HTML. The website is deployed using Amazon Web Services (AWS). The real-time data is visualized on the web page using Flask. "
         ]
     )
 
@@ -45,8 +45,13 @@ def speedmonitor():
         routes = routes,
         cur = "/",
         msg = [
-            'Welcome to driving Statistics',
-            'This platform displays data processed by '
+           "Welcome to Driving Statistics!",
+           "",
+           "This platform provides real-time driving behavior analysis which helps to identify dangerous driving behaviors to avoid traffic accidents.",
+            "The \"Statistics\" page shows a summary of the driving behavior of 10 drivers between 1st and 11th January 2017. ",
+            "The \"Monitor\" page monitors the driving speed of each driver in real time. It will issue a warning to driver when the driver is speeding. Users can select a driver from the dropdown menu at the top. The diagram will update every 30 seconds. ",
+            "",
+            "This platform displays data processed by Spark. "
         ]
     )
 
