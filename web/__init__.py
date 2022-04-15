@@ -28,7 +28,7 @@ routes = {
 }
 
 @app.route('/about')
-def hello_world():
+def about():
     return render_template(
         "index.html",
         routes = routes,
@@ -39,7 +39,7 @@ def hello_world():
     )
 
 @app.route('/')
-def speedmonitor():
+def welcome():
     return render_template(
         "index.html",
         routes = routes,
