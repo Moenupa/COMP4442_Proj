@@ -1,5 +1,9 @@
 # COMP4442-Proj
 
+A real-time data processing project for COMP4442 Cloud Computing. Data processing done by AWS EMR with Spark, and hosted using flask on AWS Elastic Beanstalk.
+
+Detect and monitor driving behavior by processing statistics (see [Dataset representation](#dataset-representation) for more details) collected from vehicles. Note that there may be multiple vehicles online and they are seperately monitored.
+
 ## Project Structure
 
 ```sh
